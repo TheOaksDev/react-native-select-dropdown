@@ -41,6 +41,7 @@ const SelectDropdown = (
     renderSearchInputRightIcon /* function returns React component for search input icon */,
     onChangeSearchInputText /* function callback when the search input text changes, this will automatically disable the dropdown's interna search to be implemented manually outside the component  */,
     initialNumToRender /* number of items to render initially */,
+    buttonStyle /* style object for the dropdown button */,
   },
   ref,
 ) => {
@@ -179,10 +180,11 @@ const SelectDropdown = (
               keyboardShouldPersistTaps="always"
               onEndReached={() => onScrollEndReached && onScrollEndReached()}
               onEndReachedThreshold={0.5}
-              initialNumToRender={initialNumToRender}
+              initialNumToRender={Math.max(initialNumToRender, defaultValueByIndex)}
               initialScrollIndex={defaultValueByIndex}
               showsVerticalScrollIndicator={showsVerticalScrollIndicator}
               onScrollToIndexFailed={onScrollToIndexFailed}
+              getItemLayout={(data, index) => ({length: buttonStyle.height, offset: buttonStyle.height * index, index})}
             />
           </DropdownWindow>
         </DropdownModal>
