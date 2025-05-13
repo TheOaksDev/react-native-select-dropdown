@@ -23,6 +23,11 @@
     "type": "git",
     "url": "https://github.com/AdelRedaa97/react-native-select-dropdown"
   },
+  "peerDependencies": {
+    "react": ">=18.2.0",
+    "react-native": ">=0.75.0",
+    "react-native-gesture-handler": ">=2.23.1"
+  },
   "author": "Adel Reda (AdelRedaa97)",
   "license": "MIT"
 }

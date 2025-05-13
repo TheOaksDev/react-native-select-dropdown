@@ -1,5 +1,6 @@
-import React, {forwardRef, useImperativeHandle, useCallback} from 'react';
-import {View, TouchableOpacity, FlatList} from 'react-native';
+import React, {forwardRef, useImperativeHandle} from 'react';
+import {View, FlatList} from 'react-native';
+import {Pressable} from 'react-native-gesture-handler';
 import {isExist} from './helpers/isExist';
 import Input from './components/Input';
 import DropdownOverlay from './components/DropdownOverlay';
