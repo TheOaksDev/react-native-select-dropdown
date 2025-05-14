@@ -1,6 +1,6 @@
 import React, {forwardRef, useImperativeHandle} from 'react';
-import {View, FlatList} from 'react-native';
-import {Pressable} from 'react-native-gesture-handler';
+import {View, Pressable as RNPressable} from 'react-native';
+import {Pressable, FlatList} from 'react-native-gesture-handler';
 import {isExist} from './helpers/isExist';
 import Input from './components/Input';
 import DropdownOverlay from './components/DropdownOverlay';
@@ -29,6 +29,7 @@ const SelectDropdown = (
     /////////////////////////////
     statusBarTranslucent /* boolean */,
     dropdownStyle /* style object for search input */,
+    //buttonLayout /* layout object for the dropdown button */,
     dropdownOverlayColor /* string */,
     showsVerticalScrollIndicator /* boolean */,
     /////////////////////////////
@@ -87,6 +88,17 @@ const SelectDropdown = (
       onFocus && onFocus();
       scrollToSelectedItem();
     });
+    // if (buttonLayout) {
+    //   onDropdownButtonLayout(
+    //     buttonLayout.width,
+    //     buttonLayout.height,
+    //     buttonLayout.x,
+    //     buttonLayout.y
+    //   );
+    // }
+    // setIsVisible(true);
+    // onFocus && onFocus();
+    // scrollToSelectedItem();
   };
   const closeDropdown = () => {
     setIsVisible(false);
@@ -154,13 +166,13 @@ const SelectDropdown = (
     let props = {...clonedElement.props};
     return (
       isExist(item) && (
-        <TouchableOpacity
+        <RNPressable
           {...props}
           disabled={disabledIndexes?.includes(index)}
-          activeOpacity={0.8}
+          //activeOpacity={0.8}
           onPress={() => onSelectItem(item, index)}>
           {props?.children}
-        </TouchableOpacity>
+        </RNPressable>
       )
     );
   };
@@ -196,10 +208,17 @@ const SelectDropdown = (
   let clonedElement = renderButton ? renderButton(selectedItem, isVisible) : <View />;
   let props = {...clonedElement.props};
   return (
-    <TouchableOpacity {...props} activeOpacity={0.8} ref={dropdownButtonRef} disabled={disabled} onPress={openDropdown}>
-      {renderDropdown()}
-      {props?.children}
-    </TouchableOpacity>
+    <View ref={dropdownButtonRef} {...props}>
+      <Pressable
+        activeOpacity={0.8}
+        //ref={dropdownButtonRef}
+        style={buttonStyle}
+        disabled={disabled}
+        onPress={openDropdown}>
+        {renderDropdown()}
+        {props?.children}
+      </Pressable>
+    </View>
   );
 };
 
