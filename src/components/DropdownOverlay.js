@@ -1,13 +1,18 @@
-import {StyleSheet, TouchableOpacity} from 'react-native';
-import React from 'react';
+import {StyleSheet, Pressable} from 'react-native';
+import React, {useEffect} from 'react';
 
-const DropdownOverlay = ({onPress, backgroundColor}) => {
+const DropdownOverlay = ({onPress, backgroundColor, cleanup}) => {
   const defaults = {
     backgroundColor: backgroundColor || 'rgba(0,0,0,0.4)',
   };
+  useEffect(() => {
+    return () => {
+      cleanup();
+    };
+  }, []);
   return (
-    <TouchableOpacity
-      activeOpacity={1}
+    <Pressable
+      //activeOpacity={1}
       onPress={onPress}
       style={{
         ...styles.dropdownOverlay,

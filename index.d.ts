@@ -20,6 +20,10 @@ declare module 'react-native-select-dropdown' {
      */
     renderItem: (selectedItem: any, index: number, isSelected: boolean) => React.ReactNode;
     /**
+     * function returns React component for the dropdown header
+     */
+    renderHeader?: () => React.ReactNode;
+    /**
      * default selected item in dropdown
      */
     defaultValue?: any;
@@ -27,6 +31,10 @@ declare module 'react-native-select-dropdown' {
      * default selected item index
      */
     defaultValueByIndex?: number;
+    /**
+     * default x position of dropdown button
+     */
+    defaultXPosition?: number;
     /**
      * disable dropdown
      */

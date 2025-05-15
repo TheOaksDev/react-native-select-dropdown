@@ -1,5 +1,5 @@
-import React, {forwardRef, useImperativeHandle} from 'react';
-import {View, Pressable as RNPressable} from 'react-native';
+import React, {forwardRef, useEffect, useImperativeHandle} from 'react';
+import {View, Pressable as RNPressable, Text} from 'react-native';
 import {Pressable, FlatList} from 'react-native-gesture-handler';
 import {isExist} from './helpers/isExist';
 import Input from './components/Input';
@@ -22,6 +22,8 @@ const SelectDropdown = (
     disabled /* boolean */,
     disabledIndexes /* array of disabled items index */,
     disableAutoScroll /* boolean */,
+    defaultXPosition = 0 /* integer */,
+    renderHeader /* function returns React component for the dropdown header */,
     testID /* dropdown menu testID */,
     onFocus /* function  */,
     onBlur /* function  */,
@@ -83,22 +85,11 @@ const SelectDropdown = (
   /* ******************* Methods ******************* */
   const openDropdown = () => {
     dropdownButtonRef.current.measure((fx, fy, w, h, px, py) => {
-      onDropdownButtonLayout(w, h, px, py);
+      onDropdownButtonLayout(w, h, defaultXPosition, py);
       setIsVisible(true);
       onFocus && onFocus();
       scrollToSelectedItem();
     });
-    // if (buttonLayout) {
-    //   onDropdownButtonLayout(
-    //     buttonLayout.width,
-    //     buttonLayout.height,
-    //     buttonLayout.x,
-    //     buttonLayout.y
-    //   );
-    // }
-    // setIsVisible(true);
-    // onFocus && onFocus();
-    // scrollToSelectedItem();
   };
   const closeDropdown = () => {
     setIsVisible(false);
@@ -118,6 +109,9 @@ const SelectDropdown = (
         });
       }
     }, 200);
+  };
+  const cleanup = () => {
+    onBlur && onBlur();
   };
   const onSelectItem = (item, index) => {
     const indexInOriginalArr = findIndexInArr(item, data);
@@ -180,8 +174,9 @@ const SelectDropdown = (
     return (
       isVisible && (
         <DropdownModal statusBarTranslucent={statusBarTranslucent} visible={isVisible} onRequestClose={onRequestClose}>
-          <DropdownOverlay onPress={closeDropdown} backgroundColor={dropdownOverlayColor} />
+          <DropdownOverlay onPress={closeDropdown} backgroundColor={dropdownOverlayColor} cleanup={cleanup} />
           <DropdownWindow layoutStyle={dropdownWindowStyle}>
+            {renderHeader && renderHeader()}
             <FlatList
               testID={testID}
               data={dataArr}
